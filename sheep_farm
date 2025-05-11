@@ -1,10 +1,5 @@
 -- This program automatically shears a sheep using any valid tool in the turtle's inventory.
 
--- Function to detect redstone signal
-function detect_redstone()
-    return redstone.getInput("bottom") -- Check for a redstone signal on the bottom side
-end
-
 -- Function to shear sheep and detect if the tool is broken
 function shear_sheep()
     if not turtle.place() then -- Use the item in the selected slot to shear the sheep
@@ -12,6 +7,13 @@ function shear_sheep()
         return false -- Indicate that the tool is broken or invalid
     end
     return true -- Indicate that the shearing was successful
+end
+
+-- Function to collect wool after shearing
+function collect_wool()
+    if turtle.suck() then -- Attempt to pick up any dropped items
+        print("Wool collected!")
+    end
 end
 
 -- Function to select a new tool if the current one is broken
@@ -34,6 +36,8 @@ while true do
             print("Out of tools! Stopping program.")
             break -- Exit the program if no tools are available
         end
+    else
+        collect_wool() -- Attempt to collect wool after successful shearing
     end
     os.sleep(1) -- Wait for 1 second before attempting to shear again
 end
